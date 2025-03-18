@@ -8,3 +8,4 @@ DOTNET_DIR="$SCRIPT_DIR/.dotnet"
 LOCAL_DOTNET="$DOTNET_DIR/dotnet"
 LOCAL_PACKAGES="$SCRIPT_DIR/packages"
 VERSIONS_LOG="$SCRIPT_DIR/versions.log"
+timestamp=$(date +"%Y%m%d%H%M%S")

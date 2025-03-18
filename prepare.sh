@@ -1,0 +1,59 @@
+#!/bin/bash
+
+source "$(dirname "$0")/init.sh"
+
+# Define variables
+SCRIPT_DIR=$(dirname "$0")
+TOOLS_DIR="$SCRIPT_DIR/tools"
+DOTNET_INSTALL_SCRIPT="$TOOLS_DIR/dotnet-install.sh"
+DOTNET_DIR="$SCRIPT_DIR/.dotnet"
+LOCAL_PACKAGES="$SCRIPT_DIR/packages"
+VERSIONS_LOG="$SCRIPT_DIR/versions.log"
+
+# Check if DOTNET_DIR and VERSIONS_LOG exist
+if [ -d "$DOTNET_DIR" ] && [ -f "$VERSIONS_LOG" ] && [ "$1" != "-f" ]; then
+    echo "The environment is already set up. If you want to reset it, pass the -f parameter to the script."
+    echo "Current config:"
+    cat "$VERSIONS_LOG"
+    exit 0
+fi
+
+# Create tools directory if it doesn't exist
+mkdir -p "$TOOLS_DIR"
+
+# Download dotnet-install script if it doesn't exist
+if [ ! -f "$DOTNET_INSTALL_SCRIPT" ]; then
+    curl -L -o "$DOTNET_INSTALL_SCRIPT" https://dot.net/v1/dotnet-install.sh
+    chmod +x "$DOTNET_INSTALL_SCRIPT"
+fi
+
+# Resets the env
+rm -rf "$DOTNET_DIR"
+rm -rf "$LOCAL_PACKAGES"
+rm -f "$VERSIONS_LOG"
+
+mkdir "$LOCAL_PACKAGES"
+
+# Install the latest SDK build if it doesn't exist
+if [ ! -d "$DOTNET_DIR" ]; then
+    # Do a dry run to get the version and store it in the log
+    VERSION=$("$DOTNET_INSTALL_SCRIPT" -c "10.0.1xx-ub" -q daily -i "$DOTNET_DIR" -DryRun | grep -oE 'version "[^"]+"' | cut -d'"' -f2)
+    echo "dotnet sdk: $VERSION" > $VERSIONS_LOG
+    "$DOTNET_INSTALL_SCRIPT" -c "10.0.1xx-ub" -q daily -i "$DOTNET_DIR"
+fi
+
+# Setup workload to take the latest manifests
+"$DOTNET_DIR/dotnet" workload config --update-mode manifests
+
+# # Install the Android workload
+"$DOTNET_DIR/dotnet" workload install android maui
+
+# List installed workloads and print the Manifest version for android workload
+INSTALLED_WORKLOADS=$("$DOTNET_DIR/dotnet" workload --info)
+ANDROID_WORKLOAD_INFO=$(echo "$INSTALLED_WORKLOADS" | grep -A 4 "\[android\]")
+if [ -n "$ANDROID_WORKLOAD_INFO" ]; then
+    ANDROID_MANIFEST_VERSION=$(echo "$ANDROID_WORKLOAD_INFO" | grep "Manifest Version" | awk '{print $3}')
+    echo "dotnet android workload manifest version: $ANDROID_MANIFEST_VERSION" >> $VERSIONS_LOG
+else
+    echo "android workload not installed"
+fi

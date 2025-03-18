@@ -7,8 +7,8 @@ if [ ! -f "$LOCAL_DOTNET" ]; then
     exit 1
 fi
 
-if [ -z "$1" ]; then
-    echo "Usage: $0 <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>"
+if [[ -z "$1" || -z "$2" ]]; then
+    echo "Usage: $0 <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent> <mono-coreclr>"
     exit 1
 fi
 
@@ -17,10 +17,23 @@ if [[ "$1" != "dotnet-new-android" && "$1" != "dotnet-new-maui" && "$1" != "dotn
     exit 1
 fi
 
+if [[ "$2" != "mono" && "$2" != "coreclr" ]]; then
+    echo "Invalid parameter. Allowed values are: mono, coreclr"
+    exit 1
+fi
+
 SAMPLE_APP=$1
+RUNTIME=$2
 
 rm -rf "$SAMPLE_APP/bin"
 rm -rf "$SAMPLE_APP/obj"
-
 logfile="$SAMPLE_APP/msbuild_$timestamp.binlog"
-${LOCAL_DOTNET} build -c Release -f net10.0-android -r android-arm64 -bl:$logfile "$SAMPLE_APP/$SAMPLE_APP.csproj"
+
+if [[ "$RUNTIME" == "mono" ]]; then
+    RUNTIME_SPECIFIC_ARGS="-p:UseMonoRuntime=true"
+elif [[ "$RUNTIME" == "coreclr" ]]; then
+    RUNTIME_SPECIFIC_ARGS="-p:UseMonoRuntime=false"
+fi
+
+echo "Building $SAMPLE_APP with $RUNTIME runtime via: ${LOCAL_DOTNET} build -c Release -f net10.0-android -r android-arm64 -bl:$logfile "$SAMPLE_APP/$SAMPLE_APP.csproj" $RUNTIME_SPECIFIC_ARGS"
+${LOCAL_DOTNET} build -c Release -f net10.0-android -r android-arm64 -bl:$logfile "$SAMPLE_APP/$SAMPLE_APP.csproj" $RUNTIME_SPECIFIC_ARGS

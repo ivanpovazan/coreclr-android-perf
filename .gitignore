@@ -58,3 +58,5 @@ nunit-*.xml
 versions.log
 tools/
 packages/
+build/
+.DS_Store

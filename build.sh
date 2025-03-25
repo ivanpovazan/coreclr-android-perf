@@ -42,5 +42,9 @@ elif [[ "$RUNTIME" == "coreclr" ]]; then
     RUNTIME_SPECIFIC_ARGS="-p:UseMonoRuntime=false"
 fi
 
+if [[ -n "$4" ]]; then
+    RUNTIME_SPECIFIC_ARGS="$RUNTIME_SPECIFIC_ARGS $4"
+fi
+
 echo "Building $SAMPLE_APP with $RUNTIME runtime via: ${LOCAL_DOTNET} build -c Release -f net10.0-android -r android-arm64 -bl:$logfile "$SAMPLE_APP/$SAMPLE_APP.csproj" $RUNTIME_SPECIFIC_ARGS $RUN_TARGET"
 ${LOCAL_DOTNET} build -c Release -f net10.0-android -r android-arm64 -bl:$logfile "$SAMPLE_APP/$SAMPLE_APP.csproj" $RUNTIME_SPECIFIC_ARGS $RUN_TARGET

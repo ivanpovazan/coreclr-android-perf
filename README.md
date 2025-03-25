@@ -1,5 +1,12 @@
 # Instructions
 
+## Checkout the repo
+
+```
+git clone --recurse-submodules https://github.com/ivanpovazan/coreclr-android-perf.git
+cd ./coreclr-android-perf
+```
+
 ## Set up environment
 
 - Run: `./prepare.sh`

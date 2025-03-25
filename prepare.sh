@@ -22,9 +22,11 @@ fi
 # Resets the env
 rm -rf "$DOTNET_DIR"
 rm -rf "$LOCAL_PACKAGES"
+rm -rf "$BUILD_DIR"
 rm -f "$VERSIONS_LOG"
 
 mkdir "$LOCAL_PACKAGES"
+mkdir "$BUILD_DIR"
 
 # Install the latest SDK build if it doesn't exist
 if [ ! -d "$DOTNET_DIR" ]; then

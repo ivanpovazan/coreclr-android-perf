@@ -7,4 +7,12 @@ if [ ! -f "$LOCAL_XAPTR" ]; then
     exit 1
 fi
 
-${LOCAL_XAPTR} "$@"
+if [[ -z "$1" ]]; then
+    echo "Usage: $0 <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>"
+    exit 1
+fi
+
+XAPTR_CONF="$1".conf
+
+echo "${LOCAL_XAPTR} -x $XAPTR_CONF"
+${LOCAL_XAPTR} -x $XAPTR_CONF

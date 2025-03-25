@@ -10,7 +10,13 @@ SAMPLE_APP=$1
 if [[ "$SAMPLE_APP" == "all" ]]; then
     APPS=("dotnet-new-android" "dotnet-new-maui" "dotnet-new-maui-samplecontent")
 else
-    APPS=("$SAMPLE_APP")
+    if [[ "$SAMPLE_APP" == "dotnet-new-android" || "$SAMPLE_APP" == "dotnet-new-maui" || "$SAMPLE_APP" == "dotnet-new-maui-samplecontent" ]]; then
+        APPS=("$SAMPLE_APP")
+    else
+        echo "Invalid option: $SAMPLE_APP"
+        echo "Usage: $0 <all|dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>"
+        exit 1
+    fi
 fi
 
 for app in "${APPS[@]}"; do

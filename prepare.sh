@@ -2,14 +2,6 @@
 
 source "$(dirname "$0")/init.sh"
 
-# Define variables
-SCRIPT_DIR=$(dirname "$0")
-TOOLS_DIR="$SCRIPT_DIR/tools"
-DOTNET_INSTALL_SCRIPT="$TOOLS_DIR/dotnet-install.sh"
-DOTNET_DIR="$SCRIPT_DIR/.dotnet"
-LOCAL_PACKAGES="$SCRIPT_DIR/packages"
-VERSIONS_LOG="$SCRIPT_DIR/versions.log"
-
 # Check if DOTNET_DIR and VERSIONS_LOG exist
 if [ -d "$DOTNET_DIR" ] && [ -f "$VERSIONS_LOG" ] && [ "$1" != "-f" ]; then
     echo "The environment is already set up. If you want to reset it, pass the -f parameter to the script."
@@ -57,3 +49,8 @@ if [ -n "$ANDROID_WORKLOAD_INFO" ]; then
 else
     echo "android workload not installed"
 fi
+
+RID=$("$DOTNET_DIR/dotnet" --info | grep "RID:" | awk '{print $2}')
+
+# Build the XAPerfTestRunner project
+"$DOTNET_DIR/dotnet" publish external/XAPerfTestRunner/XAPerfTestRunner.csproj -c Release -r $RID --self-contained true -p:PublishSingleFile=true -o "$BUILD_DIR"

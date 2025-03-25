@@ -17,5 +17,6 @@ for app in "${APPS[@]}"; do
     echo "Cleaning $app ..."
     rm -rf "$app/bin"
     rm -rf "$app/obj"
+    rm -rf "$app/perfdata"
     rm -f "$app"/*.binlog
 done

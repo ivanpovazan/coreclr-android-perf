@@ -60,3 +60,4 @@ tools/
 packages/
 build/
 .DS_Store
+perfdata/

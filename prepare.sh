@@ -36,6 +36,13 @@ if [ ! -d "$DOTNET_DIR" ]; then
     "$DOTNET_INSTALL_SCRIPT" -c "10.0.1xx-ub" -q daily -i "$DOTNET_DIR"
 fi
 
+# Download NuGet.config file from dotnet/android repo
+curl -L -o "$NUGET_CONFIG" https://raw.githubusercontent.com/dotnet/android/main/NuGet.config
+if [ $? -ne 0 ] || [ ! -f "$NUGET_CONFIG" ]; then
+    echo "Error: Failed to download or locate NuGet.config file."
+    exit 1
+fi
+
 # Setup workload to take the latest manifests
 "$DOTNET_DIR/dotnet" workload config --update-mode manifests
 
@@ -50,6 +57,8 @@ if [ -n "$ANDROID_WORKLOAD_INFO" ]; then
     echo "dotnet android workload manifest version: $ANDROID_MANIFEST_VERSION" >> $VERSIONS_LOG
 else
     echo "android workload not installed"
+    echo "Fatal error: Android workload installation failed. Please retry running this script with the -f parameter to reset the environment."
+    exit 1
 fi
 
 RID=$("$DOTNET_DIR/dotnet" --info | grep "RID:" | awk '{print $2}')

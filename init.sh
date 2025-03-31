@@ -10,4 +10,5 @@ LOCAL_DOTNET="$DOTNET_DIR/dotnet"
 LOCAL_PACKAGES="$SCRIPT_DIR/packages"
 LOCAL_XAPTR="$BUILD_DIR/xaptr"
 VERSIONS_LOG="$SCRIPT_DIR/versions.log"
+NUGET_CONFIG="$SCRIPT_DIR/NuGet.config"
 timestamp=$(date +"%Y%m%d%H%M%S")

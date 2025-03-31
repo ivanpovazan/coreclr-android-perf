@@ -64,4 +64,4 @@ fi
 RID=$("$DOTNET_DIR/dotnet" --info | grep "RID:" | awk '{print $2}')
 
 # Build the XAPerfTestRunner project
-"$DOTNET_DIR/dotnet" publish external/XAPerfTestRunner/XAPerfTestRunner.csproj -c Release -r $RID --self-contained true -p:PublishSingleFile=true -o "$BUILD_DIR"
+"$DOTNET_DIR/dotnet" publish external/XAPerfTestRunner/XAPerfTestRunner.csproj -c Release -r $RID --self-contained true -p:PublishSingleFile=true -p:RestoreAdditionalProjectSources=https://api.nuget.org/v3/index.json -o "$BUILD_DIR"

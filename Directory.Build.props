@@ -2,14 +2,4 @@
   <PropertyGroup>
     <RestorePackagesPath>$(MSBuildThisFileDirectory)/packages</RestorePackagesPath>
   </PropertyGroup>
-
-  <!-- config1 - Release, JIT, marshalled methods -->
-  <!-- Mono config1 -->
-  <PropertyGroup Condition="'$(UseMonoRuntime)' != 'false'">
-    <RunAOTCompilation>false</RunAOTCompilation>
-  </PropertyGroup>
-  <!-- CoreCLR config1 -->
-  <PropertyGroup Condition="'$(UseMonoRuntime)' == 'false'">
-  </PropertyGroup>
-
 </Project>

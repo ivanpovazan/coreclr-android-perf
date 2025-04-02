@@ -2,4 +2,18 @@
   <PropertyGroup>
     <RestorePackagesPath>$(MSBuildThisFileDirectory)/packages</RestorePackagesPath>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(_BuildConfig)' == 'PAOT'">
+    <Configuration>Release</Configuration>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <RuntimeIdentifier>android-arm64</RuntimeIdentifier>
+    <TargetFramework>net10.0-android</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(_BuildConfig)' == 'JIT'">
+    <Configuration>Release</Configuration>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <RuntimeIdentifier>android-arm64</RuntimeIdentifier>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <RunAOTCompilation>False</RunAOTCompilation>
+  </PropertyGroup>
 </Project>

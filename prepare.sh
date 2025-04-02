@@ -46,7 +46,9 @@ fi
 # Setup workload to take the latest manifests
 "$DOTNET_DIR/dotnet" workload config --update-mode manifests
 
-"$DOTNET_DIR/dotnet" workload update --from-rollback-file rollback.json
+if [ "$2" == "-userollback" ]; then
+    "$DOTNET_DIR/dotnet" workload update --from-rollback-file rollback.json
+fi
 
 # # Install the Android workload
 "$DOTNET_DIR/dotnet" workload install android maui

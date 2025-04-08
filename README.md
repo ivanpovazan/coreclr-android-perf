@@ -44,6 +44,9 @@ To measure startup performance with [XAPTR](https://github.com/grendello/XAPerfT
 > [!NOTE]
 > Each app: `<dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>` has its own `.conf` file describing the exact configuration used for performance runs (e.g., [dotnet-new-android.conf](./dotnet-new-android.conf)). Once measurements are completed the tool will output a `report.md` which can be inspected.
 
+> [!NOTE]
+> XAPTR can be manually run with any custom `.conf` file via: `./build/xaptr -x some-custom-conf-file.conf`
+
 ### Building / running sample apps manually
 
 Once `./prepare.sh` has been successfully executed you can also manually build/run template apps via `./build.sh <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent> <mono-coreclr> <build-run> <ntimes> [additional_args]`, where `additional_args` can be a list of MSBuild properties.
@@ -114,3 +117,5 @@ This is still WIP but running `./print_apk_sizes` can provided information about
 
 > [!NOTE]
 > Clean `./build` folder as needed.
+
+## 

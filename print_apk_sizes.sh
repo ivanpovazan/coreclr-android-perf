@@ -18,8 +18,8 @@ find "$BUILD_DIR" -type f -name "*-Signed.apk" | while read -r apk_file; do
     # Print the full path and size
     echo "File: $apk_file, Size: $apk_size bytes"
     
-    # Check if the "unzipped" argument is provided
-    if [[ "$1" == "unzipped" ]]; then
+    # Check if the "-unzipped" argument is provided
+    if [[ "$1" == "-unzipped" ]]; then
         # Create an output directory based on the APK file's directory
         output_dir="$(dirname "$apk_file")/unpacked"
         apktool d -f -o "$output_dir" "$apk_file"

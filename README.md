@@ -1,41 +1,94 @@
 # Instructions
 
-## Checkout the repo
+## Cloning the repo
 
 ```
 git clone --recurse-submodules https://github.com/ivanpovazan/coreclr-android-perf.git
 cd ./coreclr-android-perf
 ```
 
-## Set up environment
+## Setting up the environment
+
+### Using latest nightly builds
 
 Run: `./prepare.sh`
 
-Pass `-f` to force reseting the environment and download the latest bits. 
-Additionally, pass `-userollback` in order to use specific version defined in the rollback.json, for example:
+> [!NOTE]
+> Passing `-f` to the script resets the currently set environment.
 
-```
-./prepare.sh -f -userollback
-```
+### Using 10.0.100-preview.3 builds
 
-IMPORTANT: Currently [rollback.json](./rollback.json) is set to: `36.0.0-preview.3.20/10.0.100-preview.3`
+Run: `./prepare.sh -f -userollback`
 
-## Build / run
+> [!NOTE]
+> Passing `-userollback` updates the workloads to the version specified in [rollback.json](./rollback.json) which is currently set to: `36.0.0-preview.3.20/10.0.100-preview.3` to ensure preview 3 builds.
+
+## Performance measurments
+
+### Measuring startup with XAPTR
+
+Run `./measure_startup.sh <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>` to measure startup with https://github.com/grendello/XAPerfTestRunner by passing desired app for comparison.
+
+> [!NOTE]
+> `<dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>.conf` files include description about the exact configuration for the performance runs. Once measurements are completed the tool will output a `report.md` which can be inspected.
+
+### Building / running sample apps manually
 
 Once `./prepare.sh` has been successfully executed you can start build template apps via `./build.sh <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent> <mono-coreclr> <build-run> <ntimes> [additional_args]`, for example:
 
 ```
-./build.sh dotnet-new-android mono run 1 -p:_BuildConfig=JIT 
+./build.sh dotnet-new-android mono run 1 -p:_BuildConfig=JIT
 ```
 
-NOTE: [Directory.Build.props](./Directory.Build.props) defines some common configuration options like based on `_BuildConfig` MSBuild property
+> [!NOTE]
+> [Directory.Build.props](./Directory.Build.props) defines some common configuration options like based on `_BuildConfig` MSBuild property which can be used to run different predefined configs
 
-## Measure startup with XAPTR
+### WIP: Measuring Apk sizes
 
-Run `./measure_startup.sh <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>` to measure startup with https://github.com/grendello/XAPerfTestRunner by passing desired app for comparison.
+This is still WIP but running `./print_apk_sizes` can provided information about built apps in the terminal.
 
-NOTE: `<dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>.conf` files include description about the exact configuration for the performance runs. Once measurements are completed the tool will output a report.md which can be inspected.
+## Typical worklfow
 
-## Apk sizes
+1. Checkout the repo:
 
-WIP: Run `./print_apk_sizes` after building apps with specific configuration to get size infos.
+    ```
+    git clone --recurse-submodules https://github.com/ivanpovazan/coreclr-android-perf.git
+    cd ./coreclr-android-perf
+    ```
+
+2. Prepare environment:
+
+    ```
+    ./prepare.sh
+    ```
+
+3. Run startup measurements:
+
+    ```
+    ./measure_startup.sh dotnet-new-android
+    ```
+
+    Runs startup measurements with XAPTR and outputs the results in `results.md` as reported in the console.
+
+4. Build time measurements:
+
+    ```
+    ./build.sh dotnet-new-android coreclr build 1 -p:_BuildConfig=JIT
+    ```
+
+    Runs the build and outputs the build time in the terminal, using CoreCLR and JIT configuration. The build artifacts end up in `./build` folder. Increase the number of iterations as needed.
+
+5. Apk size measurements:
+
+    ```
+    ./print_apk_sizes.sh
+    ```
+
+    Traverses `./build` folder and prints out size of `.apk` files. E.g,:
+
+    ```
+    File: ./build/dotnet-new-android_20250408140850/bin/Release/net10.0-android/android-arm64/com.companyname.dotnet_new_android-Signed.apk, Size: 8506265 bytes
+    ```
+
+    > [!NOTE]
+    > Clean `./build` folder as needed.

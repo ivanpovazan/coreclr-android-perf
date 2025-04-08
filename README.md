@@ -51,7 +51,7 @@ To measure startup performance with [XAPTR](https://github.com/grendello/XAPerfT
 
 ### Building / running sample apps manually
 
-Once `./prepare.sh` has been successfully executed you can also manually build/run template apps via `./build.sh <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent> <mono-coreclr> <build-run> <ntimes> [additional_args]`, where `additional_args` can be a list of MSBuild properties.
+Once `./prepare.sh` has been successfully executed you can also manually build/run template apps via `./build.sh <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent> <mono-coreclr> <build-run> <ntimes> [additional_args]`, where `additional_args` can be a list of MSBuild properties in which case surround the whole list with quotues (see example bellow).
 
 For example:
 
@@ -64,7 +64,7 @@ For example:
 - To run `dotnet new maui` sample with CoreCLR in R2R configuration:
 
     ```bash
-    ./build.sh dotnet-new-maui coreclr run 1 -p:_BuildConfig=R2R
+    ./build.sh dotnet-new-maui coreclr run 1 "-p:_BuildConfig=R2R -p:AndroidEnableMarshalMethods=true"
     ```
 
 > [!NOTE]

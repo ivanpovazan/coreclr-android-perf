@@ -67,12 +67,20 @@ For example:
     ./build.sh dotnet-new-maui coreclr run 1 "-p:_BuildConfig=R2R -p:AndroidEnableMarshalMethods=true"
     ```
 
+Artifacts of manual builds are copied over to `./build` folder where they can be further inspected. This is particularly useful for size inspections. Binlogs are also preserved.
+
 > [!NOTE]
 > [Directory.Build.props](./Directory.Build.props) defines some common configuration options like based on `_BuildConfig` MSBuild property which can be used to run different predefined configs
 
 ### WIP: Measuring Apk sizes
 
-This is still WIP but running `./print_apk_sizes` can provided information about built apps in the terminal.
+In order to print information about previously built Android apps via `./build.sh` run:
+
+```bash
+./print_apk_sizes.sh [-unzipped]
+```
+
+By passing `-unzipped` it first unzipps the built apk and displays the information about it to the console.
 
 ## Typical worklfow
 
@@ -108,16 +116,23 @@ This is still WIP but running `./print_apk_sizes` can provided information about
 5. Apk size measurements:
 
     ```bash
-    ./print_apk_sizes.sh
+    ./print_apk_sizes.sh -unzipped
     ```
 
     Traverses `./build` folder and prints out size of `.apk` files. E.g,:
 
     ```bash
-    File: ./build/dotnet-new-android_20250408140850/bin/Release/net10.0-android/android-arm64/com.companyname.dotnet_new_android-Signed.apk, Size: 8506265 bytes
+    File: ./build/dotnet-new-android_20250408212750/bin/Release/net10.0-android/android-arm64/com.companyname.dotnet_new_android-Signed.apk, Size: 7420768 bytes
+    Unpacked size of ./build/dotnet-new-android_20250408212750/bin/Release/net10.0-android/android-arm64/unpacked: 17512 KB
     ```
 
-> [!NOTE]
-> Clean `./build` folder as needed.
+## Cleaning the builds
 
-## 
+In order to clean previous builds run:
+
+```bash
+./clean.sh <all|dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>
+```
+
+> [!NOTE]
+> Passing `all` will clean builds of all apps.

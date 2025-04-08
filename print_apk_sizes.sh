@@ -30,7 +30,10 @@ find "$BUILD_DIR" -type f -name "*-Signed.apk" | while read -r apk_file; do
     if [[ "$unzip" == true ]]; then
         # Create an output directory based on the APK file's directory
         output_dir="$(dirname "$apk_file")/unpacked"
-        apktool d -f -o "$output_dir" "$apk_file"
+        if ! apktool d -f -o "$output_dir" "$apk_file" > /dev/null 2>&1; then
+            echo "Error unpacking $apk_file with apktool" >&2
+            exit 1
+        fi
         # Calculate and print the size of the unpacked directory
         unpacked_size=$(du -sk "$output_dir" | cut -f1)
         echo "Unpacked size of $output_dir: $unpacked_size KB"

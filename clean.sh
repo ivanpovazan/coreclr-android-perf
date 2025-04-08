@@ -25,4 +25,5 @@ for app in "${APPS[@]}"; do
     rm -rf "$app/obj"
     rm -rf "$app/perfdata"
     rm -f "$app"/*.binlog
+    find . -type d -name "./build/$app*" -exec rm -rf {} +
 done

@@ -17,6 +17,8 @@ To prepare environment to use nighlty builds run:
 ./prepare.sh
 ```
 
+The process creates `./versions.log` which can be inspected to verify the installed versions of SDKs and workloads.
+
 > [!NOTE]
 > Passing `-f` to the script resets the currently set environment.
 

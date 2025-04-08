@@ -24,7 +24,6 @@
     <_IsPublishing>True</_IsPublishing>
     <PublishReadyToRun>True</PublishReadyToRun>
     <AndroidEnableMarshalMethods>False</AndroidEnableMarshalMethods>
-    <_SkipRemoveRegisterAttribute>True</_SkipRemoveRegisterAttribute>
   </PropertyGroup>
   <PropertyGroup Condition="'$(_BuildConfig)' == 'R2R_COMP'">
     <Configuration>Release</Configuration>
@@ -35,6 +34,5 @@
     <PublishReadyToRun>True</PublishReadyToRun>
     <PublishReadyToRunComposite>True</PublishReadyToRunComposite>
     <AndroidEnableMarshalMethods>False</AndroidEnableMarshalMethods>
-    <_SkipRemoveRegisterAttribute>True</_SkipRemoveRegisterAttribute>
   </PropertyGroup>
 </Project>

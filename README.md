@@ -40,7 +40,7 @@ To prepare environment to use preview 3 builds run:
 To measure startup performance with [XAPTR](https://github.com/grendello/XAPerfTestRunner) tool pass desired app for comparison:
 
 ```bash
-./measure_startup.sh <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>`
+./measure_startup.sh <dotnet-new-android|dotnet-new-maui|dotnet-new-maui-samplecontent>
 ```
 
 > [!NOTE]

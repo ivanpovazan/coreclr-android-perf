@@ -3,6 +3,14 @@
     <RestorePackagesPath>$(MSBuildThisFileDirectory)/packages</RestorePackagesPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(_BuildConfig)' == 'AOT'">
+    <Configuration>Release</Configuration>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <RuntimeIdentifier>android-arm64</RuntimeIdentifier>
+    <TargetFramework>net10.0-android</TargetFramework>
+    <RunAOTCompilation>True</RunAOTCompilation>
+    <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(_BuildConfig)' == 'PAOT'">
     <Configuration>Release</Configuration>
     <AndroidPackageFormat>apk</AndroidPackageFormat>

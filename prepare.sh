@@ -2,6 +2,23 @@
 
 source "$(dirname "$0")/init.sh"
 
+# Validate passed parameters
+if [ "$#" -gt 2 ]; then
+    echo "Error: Too many parameters passed."
+    echo "Usage: $0 [-f] [-userollback]"
+    exit 1
+fi
+
+if [ "$1" != "" ] && [ "$1" != "-f" ]; then
+    echo "Error: Invalid first parameter. Only '-f' is allowed."
+    exit 1
+fi
+
+if [ "$2" != "" ] && [ "$2" != "-userollback" ]; then
+    echo "Error: Invalid second parameter. Only '-userollback' is allowed."
+    exit 1
+fi
+
 # Check if DOTNET_DIR and VERSIONS_LOG exist
 if [ -d "$DOTNET_DIR" ] && [ -f "$VERSIONS_LOG" ] && [ "$1" != "-f" ]; then
     echo "The environment is already set up. If you want to reset it, pass the -f parameter to the script."

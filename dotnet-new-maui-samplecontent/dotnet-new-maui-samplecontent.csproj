@@ -74,5 +74,16 @@
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10" />
 		<PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.4" />
 	</ItemGroup>
-	
+
+  <ItemGroup Condition="'$(AndroidEnableProfiler)'=='true'">
+    <AndroidEnvironment Include="$(MSBuildThisFileDirectory)..\env.txt" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(PublishReadyToRun)' == 'true' and '$(PublishReadyToRunComposite)' == 'true' and '$(PGO)' == 'true'">
+    <_ReadyToRunPgoFiles Include="$(MSBuildThisFileDirectory)\profiles\coreclr_startup_pgo_profile.mibc" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(PublishReadyToRun)' == 'true' and '$(PublishReadyToRunComposite)' == 'true' and '$(PGO)' == 'true'">
+    <PublishReadyToRunCrossgen2ExtraArgs>--partial</PublishReadyToRunCrossgen2ExtraArgs>
+  </PropertyGroup>
+
 </Project>
